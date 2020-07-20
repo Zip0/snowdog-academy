@@ -34,7 +34,7 @@ class Books extends AdminAbstract
         $isbn = $_POST['isbn'];
 
         if (empty($title) || empty($author) || empty($isbn)) {
-            $_SESSION['flash'] = 'Missing data';
+            $_SESSION['flash'] = 'Missing data 1';
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             return;
         }
@@ -42,6 +42,39 @@ class Books extends AdminAbstract
         $this->bookManager->create($title, $author, $isbn);
 
         $_SESSION['flash'] = "Book $title by $author saved!";
+        header('Location: /admin');
+    }
+
+    public function newBookPostCsv(): void
+    {
+        $mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
+        if(in_array($_FILES['file']['type'],$mimes)){
+            $tmpName = $_FILES['file']['tmp_name'];
+            $books = array_map('str_getcsv', file($tmpName));
+
+            if (empty($books)) {
+                $_SESSION['flash'] = 'CSV file empty';
+            }
+
+            foreach ($books as $book) {
+                $title = $book[0];
+                $author = $book[1];
+                $isbn = $book[2];
+
+                if (empty($title) || empty($author) || empty($isbn)) {
+                    $_SESSION['flash'] .= "Missing data<br>";
+                } else if (strlen($isbn) > 13) {
+                    $_SESSION['flash'] .= "Book $title by $author NOT saved - ISBN too long<br>";
+                } else {
+                    $this->bookManager->create($title, $author, $isbn);
+                    $_SESSION['flash'] .= "Book $title by $author saved!<br>";
+                }
+            }
+
+        } else {
+            $_SESSION['flash'] = 'Not a CSV file or no file selected';
+        }
+
         header('Location: /admin');
     }
 

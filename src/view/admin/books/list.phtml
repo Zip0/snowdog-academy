@@ -4,6 +4,10 @@ require_once(__DIR__ . '/../../common/header.phtml'); ?>
 
 <section id="add" class="padded">
     <a href="/admin/new_book" class="btn btn-primary">Add new book</a>
+    <form action="/admin/new_book_csv"  class="form-horizontal" method="POST" enctype="multipart/form-data">
+        <input class="btn btn-primary" type="file" id="file" name="file" accept=".csv" >
+        <input class="btn btn-primary" type="submit" value="Add from CSV">
+    </form>
 </section>
 <section id="book-list" class="padded">
     <h3>Book list</h3>
