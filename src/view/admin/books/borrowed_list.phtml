@@ -1,0 +1,41 @@
+<?php /** @var Book $this */
+
+use Snowdog\Academy\Controller\Admin\Books;
+use Snowdog\Academy\Model\Book as BookModel; ?>
+
+<?php require_once(__DIR__ . '/../../common/header.phtml'); ?>
+
+<div class="container">
+
+    <div>
+        <h1>Books Borrowed for at least <?= $this->days ?? 1 ?> day(s)</h1>
+        <form action="/admin/books/list/<?= $this->days ?>" method="POST">
+            <label for="points">Days:</label>
+            <input type="number" id="days" name="days" step="1" min="0">
+            <input type="submit">
+        </form>
+        <div class="padded">
+            <table class="table table-striped">
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Isbn</th>
+                    <th>Days borrowed</th>
+
+                </tr>
+                <?php foreach ($this->getBorrowedBooks($this->days) as $book): /** @var BookModel $book */ ?>
+                    <tr>
+                        <td><?= $book->getTitle() ?></td>
+                        <td><?= $book->getAuthor() ?></td>
+                        <td><?= $book->getIsbn() ?></td>
+                        <td><?= $book->getDays() ?></td>
+                    </tr>
+                <?php endforeach ?>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<?php require_once(__DIR__ . '/../../common/footer.phtml'); ?>

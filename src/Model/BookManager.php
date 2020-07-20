@@ -61,4 +61,15 @@ class BookManager
 
         return $query->fetchAll(Database::FETCH_CLASS, Book::class);
     }
+
+    public function getBorrowedBooks(int $days): array
+    {
+        $query = $this->database->query(
+            'SELECT books.*,DATEDIFF(NOW(), borrows.borrowed_at) AS days FROM books 
+                    INNER JOIN borrows ON books.id = borrows.book_id 
+                    AND borrows.borrowed_at <= NOW() - INTERVAL ' . $days . ' DAY
+                    WHERE books.borrowed = 1');
+
+        return $query->fetchAll(Database::FETCH_CLASS, Book::class);
+    }
 }

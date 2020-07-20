@@ -4,6 +4,7 @@ namespace Snowdog\Academy\Model;
 
 use DateInterval;
 use DateTime;
+use http\QueryString;
 
 class Book
 {
@@ -15,6 +16,7 @@ class Book
     private string $isbn;
     private bool $borrowed;
     private ?string $borrowed_at;
+    private int $days;
 
     public function getId(): int
     {
@@ -47,5 +49,10 @@ class Book
         $dateTime->add(new DateInterval('P14D'));
 
         return $dateTime->format(self::DATETIME_FORMAT);
+    }
+
+    public function getDays(): int
+    {
+        return $this->days;
     }
 }

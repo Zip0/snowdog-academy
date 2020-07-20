@@ -2,6 +2,7 @@
 
 namespace Snowdog\Academy\Controller\Admin;
 
+use Snowdog\Academy\Core\Database;
 use Snowdog\Academy\Model\Book;
 use Snowdog\Academy\Model\BookManager;
 
@@ -9,6 +10,7 @@ class Books extends AdminAbstract
 {
     private BookManager $bookManager;
     private ?Book $book;
+    private int $days;
 
     public function __construct(BookManager $bookManager)
     {
@@ -111,5 +113,25 @@ class Books extends AdminAbstract
     private function getBooks(): array
     {
         return $this->bookManager->getAllBooks();
+    }
+
+    private function getBorrowedDays(): array
+    {
+        return $this->bookManager->getAllBooks();
+    }
+
+    private function getBorrowedBooks(int $days): array
+    {
+        return $this->bookManager->getBorrowedBooks($days);
+    }
+
+    public function list(int $days = 1): void
+    {
+        if (!empty($_POST['days'])) {
+            $this->days = $_POST['days'];
+        } else {
+            $this->days = $days;
+        }
+        require __DIR__ . '/../../view/admin/books/borrowed_list.phtml';
     }
 }
