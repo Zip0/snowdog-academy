@@ -36,7 +36,7 @@ class Books extends AdminAbstract
         $isbn = $_POST['isbn'];
 
         if (empty($title) || empty($author) || empty($isbn)) {
-            $_SESSION['flash'] = 'Missing data 1';
+            $_SESSION['flash'] = 'Missing data';
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             return;
         }
