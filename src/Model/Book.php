@@ -15,6 +15,7 @@ class Book
     private string $author;
     private string $isbn;
     private bool $borrowed;
+    private bool $adult;
     private ?string $borrowed_at;
     private int $days;
 
@@ -41,6 +42,11 @@ class Book
     public function isBorrowed(): bool
     {
         return $this->borrowed;
+    }
+
+    public function isAdult(): bool
+    {
+        return $this->adult;
     }
 
     public function getReturnTime(): string
